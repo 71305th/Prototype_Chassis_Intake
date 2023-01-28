@@ -22,8 +22,8 @@ public class DriveSubsystem extends SubsystemBase {
 
   /** Creates a new ExampleSubsystem. */
   public DriveSubsystem() {
-    m_motorFrontRight.setInverted(true);
-    m_motorRearRight.setInverted(true);
+    m_motorFrontLeft.setInverted(true);
+    m_motorRearLeft.setInverted(true);
     m_leftEncoder.setDistancePerPulse(DriveConstants.kDistancePerPulse);
     m_rightEncoder.setDistancePerPulse(DriveConstants.kDistancePerPulse);
     m_odometry = 
@@ -32,6 +32,7 @@ public class DriveSubsystem extends SubsystemBase {
     resetEncoders();
   }
 
+  // NEO * 4
   CANSparkMax m_motorFrontLeft = new CANSparkMax(DriveConstants.motorFrontLeft, MotorType.kBrushless);
   CANSparkMax m_motorFrontRight = new CANSparkMax(DriveConstants.motorFrontRight, MotorType.kBrushless);
   CANSparkMax m_motorRearLeft = new CANSparkMax(DriveConstants.motorRearLeft, MotorType.kBrushless);
@@ -69,11 +70,11 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void arcadeDrive(double speed, double rotation) {
-    m_drive.arcadeDrive(speed*0.6, rotation*0.7);
+    m_drive.arcadeDrive(-speed*0.6, rotation*0.7);
   }
 
   public void tankDrive(double left, double right) {
-    m_drive.tankDrive(left, right);
+    m_drive.tankDrive(-left, -right);
   }
 
   public void setMotor2zero() {
@@ -101,6 +102,10 @@ public class DriveSubsystem extends SubsystemBase {
 
   /**
    * Controls the left and right sides of the drive directly with voltages.
+   * 
+   * <strong> Heading </strong>There is no line break.
+   * <strong> Heading </strong>There is no line break.
+   * 
    *
    * @param leftVolts the commanded left output
    * @param rightVolts the commanded right output

@@ -16,11 +16,13 @@ import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
  */
 public final class Constants {
     public static final class DriveConstants {
-        // Motors & Encoders
+        // Motors
         public static final int motorFrontLeft = 2  ;
         public static final int motorFrontRight = 4;
         public static final int motorRearLeft = 5;
         public static final int motorRearRight = 3;
+
+        // Encoders
         public static final int[] kLeftEncoderPort = {0, 0};
         public static final int[] kRightEncoderPort = {0, 0};
         public static final boolean kLeftEncoderReversed = true;
@@ -43,13 +45,30 @@ public final class Constants {
     }
     
     public final class AutoConstants {
+        // Feed forward shit
         public static final int kRamseteB = 0;
         public static final int kRamseteZeta = 0;
         public static final int kMaxSpeedMetersPerSecond = 0;
         public static final int kMaxAccelerationMetersPerSecondSquared = 0;
     }
 
+    public final class IntakeConstants {
+        // Motors (PDP)
+        public static final int motor1 = 0;
+        public static final int motor2 = 0;
+        public static final int motor3 = 0;
+        public static final int motor4 = 0;
+
+        // Pneumatics (PCM)
+        public static final int horizontalSolenoid = 0;
+        public static final int verticalSolenoid = 0;
+
+        // Intake Wheel Speed 
+        public static final int wheelSpeedRPM = 0;
+    }
+
     public final class OIConstants {
+        // Logitech F310
         public static final int leftStick_X = 0;
         public static final int leftStick_Y = 1;
         public static final int rightStick_X = 4;

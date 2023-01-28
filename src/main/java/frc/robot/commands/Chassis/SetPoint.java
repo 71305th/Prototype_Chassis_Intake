@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.Chassis;
 
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.DriveSubsystem;
@@ -33,10 +33,6 @@ public class SetPoint extends CommandBase {
     addRequirements(drive);
   }
 
-  public void stop() {
-    isEnd = true;
-  }
-
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
@@ -47,17 +43,28 @@ public class SetPoint extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (driverJoystick.getRawAxis(OIConstants.leftStick_Y)!=0 || driverJoystick.getRawAxis(OIConstants.rightStick_X)!=0)
+    if (Math.abs(driverJoystick.getRawAxis(OIConstants.leftStick_Y)) < 0.02
+    || (Math.abs(driverJoystick.getRawAxis(OIConstants.rightStick_X))) < 0.02)
       stop();
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    stop();
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
     return isEnd;
+  }
+
+  public void stop() {
+    isEnd = true;
+  }
+
+  public void setPoint() {
+
   }
 }

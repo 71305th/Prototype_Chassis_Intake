@@ -7,22 +7,26 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.IntakeConstants;
+import frc.robot.Constants.IntakeFrontConstants;
+import frc.robot.Constants.PneumaticsConstants;
 
 public class IntakeFrontSubsystem extends SubsystemBase {
 
   // NEO 550 * 4
-  CANSparkMax motor1 = new CANSparkMax(IntakeConstants.motor1, MotorType.kBrushless);
-  CANSparkMax motor2 = new CANSparkMax(IntakeConstants.motor2, MotorType.kBrushless);
-  CANSparkMax motor3 = new CANSparkMax(IntakeConstants.motor3, MotorType.kBrushless);
-  CANSparkMax motor4 = new CANSparkMax(IntakeConstants.motor4, MotorType.kBrushless);
+  CANSparkMax motor1 = new CANSparkMax(IntakeFrontConstants.motor1, MotorType.kBrushless);
+  CANSparkMax motor2 = new CANSparkMax(IntakeFrontConstants.motor2, MotorType.kBrushless);
+  CANSparkMax motor3 = new CANSparkMax(IntakeFrontConstants.motor3, MotorType.kBrushless);
+  CANSparkMax motor4 = new CANSparkMax(IntakeFrontConstants.motor4, MotorType.kBrushless);
 
   // Pneumatics
-  Solenoid horizontal = new Solenoid(PneumaticsModuleType.CTREPCM, IntakeConstants.horizontalSolenoid);
-  Solenoid vertical = new Solenoid(PneumaticsModuleType.CTREPCM, IntakeConstants.verticalSolenoid);
+  Solenoid horizontal = new Solenoid(PneumaticsModuleType.CTREPCM, PneumaticsConstants.IntakeRearHorizontalSolenoid);
+  Solenoid vertical = new Solenoid(PneumaticsModuleType.CTREPCM, PneumaticsConstants.IntakeRearVerticalSolenoid);
+
+  Compressor compressor = new Compressor(PneumaticsConstants.Compressor, PneumaticsModuleType.CTREPCM);
 
   /** Creates a new IntakeSubsystem. */
   public IntakeFrontSubsystem() {
@@ -38,7 +42,7 @@ public class IntakeFrontSubsystem extends SubsystemBase {
   }
 
   public void intakeRun() {
-    motor1.set(IntakeConstants.wheelSpeedRPM);
+    motor1.set(IntakeFrontConstants.wheelSpeedRPM);
   }
 
   public void intakeUp() {

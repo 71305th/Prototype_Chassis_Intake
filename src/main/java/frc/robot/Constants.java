@@ -52,23 +52,41 @@ public final class Constants {
         public static final int kMaxAccelerationMetersPerSecondSquared = 0;
     }
 
-    public final class IntakeConstants {
-        // Motors (PDP)
+    public final class IntakeFrontConstants {
+        // Left
         public static final int motor1 = 0;
         public static final int motor2 = 0;
+        // Right
         public static final int motor3 = 0;
         public static final int motor4 = 0;
-
-        // Pneumatics (PCM)
-        public static final int horizontalSolenoid = 0;
-        public static final int verticalSolenoid = 0;
 
         // Intake Wheel Speed 
         public static final int wheelSpeedRPM = 0;
     }
 
+    public final class IntakeRearConstants {
+        // Left
+        public static final int motor1 = 0;
+        public static final int motor2 = 0;
+        // Right
+        public static final int motor3 = 0;
+        public static final int motor4 = 0;
+
+        // Intake Wheel Speed 
+        public static final int wheelSpeedRPM = 0;
+    }
+
+    public final class PneumaticsConstants {
+        // PCM Ports
+        public static final int IntakeFrontHorizontalSolenoid = 0;
+        public static final int IntakeFrontVerticalSolenoid = 0;
+        public static final int IntakeRearHorizontalSolenoid = 0;
+        public static final int IntakeRearVerticalSolenoid = 0;
+        public static final int Compressor = 0;
+    }
+
     public final class OIConstants {
-        // Logitech F310
+        // Logitech F310 (X Input Mode)
         public static final int leftStick_X = 0;
         public static final int leftStick_Y = 1;
         public static final int rightStick_X = 4;

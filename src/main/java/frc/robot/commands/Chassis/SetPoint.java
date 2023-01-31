@@ -7,6 +7,7 @@ package frc.robot.commands.Chassis;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
@@ -38,14 +39,16 @@ public class SetPoint extends CommandBase {
   public void initialize() {
     drive.setMotor2zero();
     isEnd = false;
+    setPoint();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     if (Math.abs(driverJoystick.getRawAxis(OIConstants.leftStick_Y)) < 0.02
-    || (Math.abs(driverJoystick.getRawAxis(OIConstants.rightStick_X))) < 0.02)
+    || (Math.abs(driverJoystick.getRawAxis(OIConstants.rightStick_X))) < 0.02) {
       stop();
+    }
   }
 
   // Called once the command ends or is interrupted.
@@ -65,6 +68,8 @@ public class SetPoint extends CommandBase {
   }
 
   public void setPoint() {
-
+    drive.resetEncoders();
+    drive.zeroHeading();
+    
   }
 }

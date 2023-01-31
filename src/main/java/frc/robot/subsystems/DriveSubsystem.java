@@ -26,10 +26,11 @@ public class DriveSubsystem extends SubsystemBase {
     m_motorRearLeft.setInverted(true);
     m_leftEncoder.setDistancePerPulse(DriveConstants.kDistancePerPulse);
     m_rightEncoder.setDistancePerPulse(DriveConstants.kDistancePerPulse);
+    resetEncoders();
+    m_gyro.reset();
     m_odometry = 
       new DifferentialDriveOdometry(
         m_gyro.getRotation2d(), m_leftEncoder.getDistance(), m_rightEncoder.getDistance());
-    resetEncoders();
   }
 
   // NEO * 4

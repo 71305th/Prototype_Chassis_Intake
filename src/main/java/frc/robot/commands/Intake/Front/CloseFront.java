@@ -21,7 +21,7 @@ public class CloseFront extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    intake.horizontalStop();
+    intake.enableCompressor();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -33,7 +33,6 @@ public class CloseFront extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    intake.horizontalStop();
   }
 
   // Returns true when the command should end.

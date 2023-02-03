@@ -33,12 +33,15 @@ public class IntakeFrontSubsystem extends SubsystemBase {
     motor2.follow(motor1, false);
     motor4.follow(motor3, false);
     motor3.follow(motor1, true);
-    intakeDown();
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+  }
+
+  public void enableCompressor() {
+    compressor.enableDigital();
   }
 
   public void intakeRun() {
@@ -59,14 +62,6 @@ public class IntakeFrontSubsystem extends SubsystemBase {
 
   public void intakeClose() {
     horizontal.set(false);
-  }
-
-  public void horizontalStop() {
-    horizontal.close();
-  }
-
-  public void verticalStop() {
-    vertical.close();
   }
 
   public void wheelStop() {

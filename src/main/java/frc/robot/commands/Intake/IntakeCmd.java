@@ -5,34 +5,60 @@
 package frc.robot.commands.Intake;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.IntakeFrontSubsystem;
-import frc.robot.subsystems.IntakeRearSubsystem;
+import frc.robot.commands.Intake.IntakeEnums.IntakeAction;
+import frc.robot.commands.Intake.IntakeEnums.IntakeSide;
+import frc.robot.subsystems.IntakeSubsystem;
 
 public class IntakeCmd extends CommandBase {
 
-  IntakeFrontSubsystem intakeFront;
-  IntakeRearSubsystem intakeRear;
-  String side;
-  String action;
+  IntakeSubsystem intake;
+  IntakeSide side;
+  IntakeAction action;
 
   /** Creates a new IntakeCmd. */
-  public IntakeCmd(IntakeFrontSubsystem front, IntakeRearSubsystem rear, String side, String action) {
+  public IntakeCmd(IntakeSubsystem intake, IntakeSide side, IntakeAction action) {
     // Use addRequirements() here to declare subsystem dependencies.
-    intakeFront = front;
-    intakeRear = rear;
+    this.intake = intake;
     this.side = side;
     this.action = action;
-    addRequirements(front, rear);
+    addRequirements(intake);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    switch (action) {
-      case "Front":
-        
+    switch (side) {
+      case FRONT:
+        switch (action) {
+          case UP:
+          case DOWN:
+          case OPEN:
+          case CLOSE:
+            intake.enableCompressor();
+            break;
+          case RUN:
+          case STOP:
+            intake.frontStop();
+          default:
+            System.out.println("IntakeCmd action failed: init");
+            break;
+        }
         break;
-      case "Rear":
+      case REAR:
+        switch (action) {
+          case UP:
+          case DOWN:
+          case OPEN:
+          case CLOSE:
+            intake.enableCompressor();
+            break;
+          case RUN:
+          case STOP:
+            intake.RearStop();
+          default:
+            System.out.println("IntakeCmd action failed: init");
+            break;
+        }
         break;
       default:
         break;
@@ -41,28 +67,95 @@ public class IntakeCmd extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    switch (side) {
+      case FRONT:
+        switch (action) {
+          case UP:
+            intake.frontUp();
+          case DOWN:
+            intake.frontDown();
+          case OPEN:
+            intake.frontOpen();
+          case CLOSE:
+            intake.enableCompressor();
+            break;
+          case RUN:
+            intake.frontRun();
+          case STOP:
+            intake.frontStop();
+          default:
+            System.out.println("IntakeCmd action failed: executing");
+            break;
+        }
+        break;
+      case REAR:
+        switch (action) {
+          case UP:
+            intake.RearUp();
+          case DOWN:
+            intake.RearDown();
+          case OPEN:
+            intake.RearOpen();
+          case CLOSE:
+            intake.enableCompressor();
+            break;
+          case RUN:
+            intake.RearRun();
+          case STOP:
+            intake.RearStop();
+          default:
+            System.out.println("IntakeCmd action failed: executing");
+            break;
+        }
+        break;
+      default:
+        break;
+    }
+  }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    switch (side) {
+      case FRONT:
+        switch (action) {
+          case UP:
+          case DOWN:
+          case OPEN:
+          case CLOSE:
+            break;
+          case RUN:
+          case STOP:
+            intake.frontStop();
+          default:
+            System.out.println("IntakeCmd action failed: end");
+            break;
+        }
+        break;
+      case REAR:
+        switch (action) {
+          case UP:
+          case DOWN:
+          case OPEN:
+          case CLOSE:
+            break;
+          case RUN:
+          case STOP:
+            intake.RearStop();
+          default:
+            System.out.println("IntakeCmd action failed: end");
+            break;
+        }
+        break;
+      default:
+        break;
+    }
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
     return false;
-  }
-
-  public enum IntakeActions {
-    UP,
-    DOWN,
-    OPEN,
-    CLOSE,
-    RUN,
-  }
-
-  public enum IntakeSide {
-    FRONT,
-    REAR,
   }
 }

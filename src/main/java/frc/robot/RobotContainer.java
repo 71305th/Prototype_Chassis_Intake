@@ -21,19 +21,10 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.Chassis.PathFollowing;
 import frc.robot.commands.Chassis.SetPoint;
-import frc.robot.commands.Intake.Front.CloseFront;
-import frc.robot.commands.Intake.Front.DownFront;
-import frc.robot.commands.Intake.Front.OpenFront;
-import frc.robot.commands.Intake.Front.RunFront;
-import frc.robot.commands.Intake.Front.UpFront;
-import frc.robot.commands.Intake.Rear.CloseRear;
-import frc.robot.commands.Intake.Rear.DownRear;
-import frc.robot.commands.Intake.Rear.OpenRear;
-import frc.robot.commands.Intake.Rear.RunRear;
-import frc.robot.commands.Intake.Rear.UpRear;
+import frc.robot.commands.Intake.IntakeCmd;
+import frc.robot.commands.Intake.IntakeEnums.IntakeSide;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.IntakeFrontSubsystem;
-import frc.robot.subsystems.IntakeRearSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
@@ -55,24 +46,11 @@ public class RobotContainer {
 
   // Subsystems
   private final DriveSubsystem m_drive = new DriveSubsystem();
-  private final IntakeFrontSubsystem m_frontIntake = new IntakeFrontSubsystem();
-  private final IntakeRearSubsystem m_rearIntake = new IntakeRearSubsystem();
+  private final IntakeSubsystem m_intake = new IntakeSubsystem();
 
   // Chassis Commands
   private final SetPoint m_setPoint = new SetPoint(m_drive);
-
-  // Intake Commands
-  private final RunFront m_intakeFrontRun = new RunFront(m_frontIntake);
-  private final UpFront m_intakeFrontUp = new UpFront(m_frontIntake);
-  private final DownFront m_intakeFrontDown = new DownFront(m_frontIntake);
-  private final OpenFront m_intakeFrontOpen = new OpenFront(m_frontIntake);
-  private final CloseFront m_intakeFrontClose = new CloseFront(m_frontIntake);
-  private final RunRear m_intakeRearRun = new RunRear(m_rearIntake);
-  private final UpRear m_intakeRearUp = new UpRear(m_rearIntake);
-  private final DownRear m_intakeRearDown = new DownRear(m_rearIntake);
-  private final OpenRear m_intakeRearOpen = new OpenRear(m_rearIntake);
-  private final CloseRear m_intakeRearClose = new CloseRear(m_rearIntake);
-
+  
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Drive
@@ -93,18 +71,6 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     new JoystickButton(driverJoystick, OIConstants.Btn_A).toggleOnTrue(m_setPoint);
-    new JoystickButton(driverJoystick, OIConstants.Btn_RB).toggleOnTrue(m_intakeFrontOpen)
-    .whileFalse(m_intakeFrontClose);
-    new JoystickButton(driverJoystick, OIConstants.Btn_LB).toggleOnTrue(m_intakeRearOpen)
-    .whileFalse(m_intakeRearClose);
-    new JoystickButton(driverJoystick, OIConstants.trigger_R)
-      .toggleOnTrue(
-        new SequentialCommandGroup(m_intakeFrontDown, m_intakeFrontRun))
-        .whileFalse(m_intakeFrontUp);
-    new JoystickButton(driverJoystick, OIConstants.trigger_L)
-      .toggleOnTrue(
-        new SequentialCommandGroup(m_intakeRearDown, m_intakeRearRun))
-        .whileFalse(m_intakeRearUp);
   }
 
   /**

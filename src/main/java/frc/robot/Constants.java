@@ -65,27 +65,15 @@ public final class Constants {
     }
 
     public final class IntakeFrontConstants {
-        // Left
-        public static final int motor1 = 0;
-        public static final int motor2 = 0;
-        // Right
-        public static final int motor3 = 0;
-        public static final int motor4 = 0;
-
-        // Intake Wheel Speed 
-        public static final int wheelSpeedRPM = 0;
+        public static final int motorLeft = 0;
+        public static final int motorRight = 0;
+        public static final int wheelSpeedVolt = 0;
     }
 
     public final class IntakeRearConstants {
-        // Left
-        public static final int motor1 = 0;
-        public static final int motor2 = 0;
-        // Right
-        public static final int motor3 = 0;
-        public static final int motor4 = 0;
-
-        // Intake Wheel Speed 
-        public static final int wheelSpeedRPM = 0;
+        public static final int motorLeft = 0;
+        public static final int motorRight = 0;
+        public static final int wheelSpeedVolt = 0;
     }
 
     public final class PneumaticsConstants {

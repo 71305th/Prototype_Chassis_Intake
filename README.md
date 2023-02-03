@@ -2,7 +2,8 @@
 The code of the prototype chassis.
 ## Features
 * Path-following 
-* Setpoint PID (Not Done)
+* Setpoint PID 
+* Intake
 ## Todo
-* 完成 SetPoint PID
-* Path-Following X Arm-Shaking in Autonomous period
+* Combine the auto actions together
+* Ramsete ???

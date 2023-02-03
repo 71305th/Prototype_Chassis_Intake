@@ -58,7 +58,7 @@ public class IntakeCmd extends CommandBase {
     DOWN,
     OPEN,
     CLOSE,
-    
+    RUN,
   }
 
   public enum IntakeSide {

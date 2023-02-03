@@ -74,10 +74,6 @@ public class DriveSubsystem extends SubsystemBase {
     m_drive.arcadeDrive(-speed*0.6, rotation*0.7);
   }
 
-  public void tankDrive(double left, double right) {
-    m_drive.tankDrive(-left, -right);
-  }
-
   public void setMotor2zero() {
     m_drive.arcadeDrive(0, 0);
   }
@@ -103,10 +99,6 @@ public class DriveSubsystem extends SubsystemBase {
 
   /**
    * Controls the left and right sides of the drive directly with voltages.
-   * 
-   * <strong> Heading </strong>There is no line break.
-   * <strong> Heading </strong>There is no line break.
-   * 
    *
    * @param leftVolts the commanded left output
    * @param rightVolts the commanded right output

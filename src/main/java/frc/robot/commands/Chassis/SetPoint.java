@@ -4,10 +4,14 @@
 
 package frc.robot.commands.Chassis;
 
+import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.DriveSubsystem;
+
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenixpro.hardware.TalonFX;
+
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
@@ -17,7 +21,13 @@ public class SetPoint extends CommandBase {
 
   private final DriveSubsystem drive;
 
-  private PIDController drivePID = new PIDController(0.1, 0.01, 0.01);
+  private PIDController lockPIDLeft = new PIDController(
+    DriveConstants.kLockPIDLeftkP, DriveConstants.kLockPIDLeftkI, 
+    DriveConstants.kLockPIDLeftkD, DriveConstants.kLockPIDLeftiLimit);
+
+  private PIDController lockPIDRight = new PIDController(
+    DriveConstants.kLockPIDRightkP, DriveConstants.kLockPIDRightkI,
+    DriveConstants.kLockPIDRightkD, DriveConstants.kLockPIDRightiLimit);
 
   private Joystick driverJoystick = new Joystick(0);
 
@@ -38,8 +48,8 @@ public class SetPoint extends CommandBase {
   @Override
   public void initialize() {
     drive.setMotor2zero();
+    drive.resetEncoders();
     isEnd = false;
-    setPoint();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -49,6 +59,11 @@ public class SetPoint extends CommandBase {
     || (Math.abs(driverJoystick.getRawAxis(OIConstants.rightStick_X))) < 0.02) {
       stop();
     }
+
+    double disLeft = drive.getLeftEncoder().getDistance();
+    double disRight = drive.getRightEncoder().getDistance();
+
+    drive.tankDriveVolts(lockPIDLeft.calculate(-disLeft), lockPIDRight.calculate(-disRight));
   }
 
   // Called once the command ends or is interrupted.
@@ -65,11 +80,5 @@ public class SetPoint extends CommandBase {
 
   public void stop() {
     isEnd = true;
-  }
-
-  public void setPoint() {
-    drive.resetEncoders();
-    drive.zeroHeading();
-    
   }
 }

@@ -167,7 +167,7 @@ public class RobotContainer {
     // return ramseteCommand.andThen(() -> m_drive.tankDriveVolts(0, 0));
 
     return new SequentialCommandGroup(
-      new PathFollowing(m_drive, "New Path"), 
+      new PathFollowing(m_drive, "Pos2-1-C"), 
       m_setPoint);
   }
 }

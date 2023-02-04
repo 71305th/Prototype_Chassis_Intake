@@ -7,3 +7,4 @@ The code of the prototype chassis.
 ## Todo
 * Combine the auto actions together
 * Ramsete ???
+* Draw the paths

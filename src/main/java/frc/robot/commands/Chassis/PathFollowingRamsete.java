@@ -20,20 +20,22 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.DriveSubsystem;
 
-public class PathFollowing extends CommandBase {
+public class PathFollowingRamsete extends CommandBase {
 
   DriveSubsystem m_drive;
 
   String pathname;
+  boolean isFirstpath;
 
   RamseteCommand ramseteCommand;
   PPRamseteCommand ppRamseteCommand;
   
   /** Creates a new PathFollowing. */
-  public PathFollowing(DriveSubsystem m_drive, String pathname) {
+  public PathFollowingRamsete(DriveSubsystem m_drive, String pathname, boolean isFirstpath) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.pathname = pathname;
     this.m_drive = m_drive;
+    this.isFirstpath = isFirstpath;
     addRequirements(m_drive);
   }
 
@@ -104,7 +106,9 @@ public class PathFollowing extends CommandBase {
         );
 
     // Reset odometry to the starting pose of the trajectory.
-    m_drive.resetOdometry(path.getInitialPose());
+    if (isFirstpath) {
+      m_drive.resetOdometry(path.getInitialPose());
+    }
   }
 
   // Called every time the scheduler runs while the command is scheduled.

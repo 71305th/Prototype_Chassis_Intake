@@ -17,20 +17,20 @@ import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 public final class Constants {
     public static final class DriveConstants {
         // Motors
-        public static final int motorFrontLeft = 2  ;
-        public static final int motorFrontRight = 4;
-        public static final int motorRearLeft = 5;
+        public static final int motorFrontLeft = 4;
+        public static final int motorFrontRight = 1;
+        public static final int motorRearLeft = 2;
         public static final int motorRearRight = 3;
 
         // Encoders
-        public static final int[] kLeftEncoderPort = {0, 0};
-        public static final int[] kRightEncoderPort = {0, 0};
-        public static final boolean kLeftEncoderReversed = true;
+        public static final int kLeftEncoderPort = 3;
+        public static final int kRightEncoderPort = 4;
+        public static final boolean kLeftEncoderReversed = false;
         public static final boolean kRightEncoderReversed = true;
-        public static final double kEncoderCPR = 0;
-        public static final double kWheelDiameterMeters = 0;
+        public static final double kEncoderCPR = 4096;
+        public static final double kWheelDiameterMeters = 0.097;
         public static final double kWheelCircumference = kWheelDiameterMeters*Math.PI;
-        public static final double kGearRatio = 0;
+        public static final double kGearRatio = 3/25;
         public static final double kDistancePerPulse = kWheelCircumference/kEncoderCPR/kGearRatio;
         // distancePerPulse = gearRatio * wheelPerimeter / EncoderCPR
 
@@ -41,7 +41,7 @@ public final class Constants {
         public static final int kPDriveVel = 0;
 
         // Chassis Related
-        public static final double kTrackWidthmeters = 0;
+        public static final double kTrackWidthmeters = 0.595;
         public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(kTrackWidthmeters);
 
         // Charge Station

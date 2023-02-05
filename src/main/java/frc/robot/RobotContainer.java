@@ -32,48 +32,53 @@ public class RobotContainer {
 
   // Joystick
   private final Joystick driverJoystick = new Joystick(0);
-  private final Joystick operatorJoystick = new Joystick(1);
+  // private final Joystick operatorJoystick = new Joystick(1);
 
   // Subsystems
   private final DriveSubsystem m_drive = new DriveSubsystem();
-  private final IntakeSubsystem m_intake = new IntakeSubsystem();
+  // private final IntakeSubsystem m_intake = new IntakeSubsystem();
 
   // Chassis Commands
   private final SetPoint m_setPoint = new SetPoint(m_drive);
 
   // Intake Commands
-  private final SequentialCommandGroup m_intakeFrontDownRun = new SequentialCommandGroup(
-    new IntakeCmd(m_intake, IntakeSide.FRONT, IntakeAction.DOWN),
-    new IntakeCmd(m_intake, IntakeSide.FRONT, IntakeAction.RUN)
-  );
+  // private final SequentialCommandGroup m_intakeFrontDownRun = new SequentialCommandGroup(
+  //   new IntakeCmd(m_intake, IntakeSide.FRONT, IntakeAction.DOWN),
+  //   new IntakeCmd(m_intake, IntakeSide.FRONT, IntakeAction.RUN)
+  // );
 
-  private final SequentialCommandGroup m_intakeFrontStopUp = new SequentialCommandGroup(
-    new IntakeCmd(m_intake, IntakeSide.FRONT, IntakeAction.STOP),
-    new IntakeCmd(m_intake, IntakeSide.FRONT, IntakeAction.UP)
-  );
+  // private final SequentialCommandGroup m_intakeFrontStopUp = new SequentialCommandGroup(
+  //   new IntakeCmd(m_intake, IntakeSide.FRONT, IntakeAction.STOP),
+  //   new IntakeCmd(m_intake, IntakeSide.FRONT, IntakeAction.UP)
+  // );
 
-  private final SequentialCommandGroup m_intakeRearDownRun = new SequentialCommandGroup(
-    new IntakeCmd(m_intake, IntakeSide.REAR, IntakeAction.DOWN),
-    new IntakeCmd(m_intake, IntakeSide.REAR, IntakeAction.RUN)
-  );
+  // private final SequentialCommandGroup m_intakeRearDownRun = new SequentialCommandGroup(
+  //   new IntakeCmd(m_intake, IntakeSide.REAR, IntakeAction.DOWN),
+  //   new IntakeCmd(m_intake, IntakeSide.REAR, IntakeAction.RUN)
+  // );
 
-  private final SequentialCommandGroup m_intakeRearStopUp = new SequentialCommandGroup(
-    new IntakeCmd(m_intake, IntakeSide.REAR, IntakeAction.STOP),
-    new IntakeCmd(m_intake, IntakeSide.REAR, IntakeAction.UP)
-  );
+  // private final SequentialCommandGroup m_intakeRearStopUp = new SequentialCommandGroup(
+  //   new IntakeCmd(m_intake, IntakeSide.REAR, IntakeAction.STOP),
+  //   new IntakeCmd(m_intake, IntakeSide.REAR, IntakeAction.UP)
+  // );
 
-  private final IntakeCmd m_intakeFrontOpen = new IntakeCmd(m_intake, IntakeSide.FRONT, IntakeAction.OPEN);
-  private final IntakeCmd m_intakeFrontClose = new IntakeCmd(m_intake, IntakeSide.FRONT, IntakeAction.CLOSE);
-  private final IntakeCmd m_intakeRearOpen = new IntakeCmd(m_intake, IntakeSide.REAR, IntakeAction.OPEN);
-  private final IntakeCmd m_intakeRearClose = new IntakeCmd(m_intake, IntakeSide.REAR, IntakeAction.CLOSE);
+  // private final IntakeCmd m_intakeFrontOpen = new IntakeCmd(m_intake, IntakeSide.FRONT, IntakeAction.OPEN);
+  // private final IntakeCmd m_intakeFrontClose = new IntakeCmd(m_intake, IntakeSide.FRONT, IntakeAction.CLOSE);
+  // private final IntakeCmd m_intakeRearOpen = new IntakeCmd(m_intake, IntakeSide.REAR, IntakeAction.OPEN);
+  // private final IntakeCmd m_intakeRearClose = new IntakeCmd(m_intake, IntakeSide.REAR, IntakeAction.CLOSE);
   
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Drive
+    // m_drive.setDefaultCommand(new RunCommand(() -> {
+    //   m_drive.arcadeDrive(
+    //     -driverJoystick.getRawAxis(OIConstants.leftStick_Y), -driverJoystick.getRawAxis(OIConstants.rightStick_X));}
+    //   , m_drive));
+
     m_drive.setDefaultCommand(new RunCommand(() -> {
-      m_drive.arcadeDrive(
-        -driverJoystick.getRawAxis(OIConstants.leftStick_Y), driverJoystick.getRawAxis(OIConstants.rightStick_X));}
-      , m_drive));
+      m_drive.tankDrive(
+        driverJoystick.getRawAxis(OIConstants.leftStick_Y), driverJoystick.getRawAxis(OIConstants.rightStick_Y));
+    }, m_drive));
 
     // Configure the button bindings
     configureButtonBindings();
@@ -89,14 +94,14 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     new JoystickButton(driverJoystick, OIConstants.Btn_A).toggleOnTrue(m_setPoint);
-    new JoystickButton(driverJoystick, OIConstants.Btn_RB).toggleOnTrue(m_intakeFrontDownRun)
-      .onFalse(m_intakeFrontStopUp);
-    new JoystickButton(driverJoystick, OIConstants.Btn_LB).toggleOnTrue(m_intakeRearDownRun)
-      .onFalse(m_intakeRearStopUp);
-    new JoystickButton(driverJoystick, OIConstants.trigger_R).toggleOnTrue(m_intakeFrontOpen)
-      .onFalse(m_intakeFrontClose);
-    new JoystickButton(driverJoystick, OIConstants.trigger_L).toggleOnTrue(m_intakeRearOpen)
-      .onFalse(m_intakeRearClose);
+    // new JoystickButton(driverJoystick, OIConstants.Btn_RB).toggleOnTrue(m_intakeFrontDownRun)
+    //   .onFalse(m_intakeFrontStopUp);
+    // new JoystickButton(driverJoystick, OIConstants.Btn_LB).toggleOnTrue(m_intakeRearDownRun)
+    //   .onFalse(m_intakeRearStopUp);
+    // new JoystickButton(driverJoystick, OIConstants.trigger_R).toggleOnTrue(m_intakeFrontOpen)
+    //   .onFalse(m_intakeFrontClose);
+    // new JoystickButton(driverJoystick, OIConstants.trigger_L).toggleOnTrue(m_intakeRearOpen)
+    //   .onFalse(m_intakeRearClose);
   }
 
   /**

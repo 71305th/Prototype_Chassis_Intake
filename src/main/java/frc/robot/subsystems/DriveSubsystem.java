@@ -55,8 +55,6 @@ public class DriveSubsystem extends SubsystemBase {
         m_gyro.getRotation2d(), getLeftRelativeDistance(), getRightRelativeDistance());
   }
 
-  Joystick js1 = new Joystick(0);
-
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
@@ -65,12 +63,11 @@ public class DriveSubsystem extends SubsystemBase {
         m_gyro.getRotation2d(), getLeftRelativeDistance(), getRightRelativeDistance());   
       SmartDashboard.putNumber("Left Relative Dis", getLeftRelativeDistance());
       SmartDashboard.putNumber("Right Relative Dis", getRightRelativeDistance());
-      SmartDashboard.putNumber("Left Dis Degrees", m_leftEncoder.getPosition());
-      SmartDashboard.putNumber("js1 LeftY", js1.getRawAxis(1));
-      SmartDashboard.putNumber("js1 RightX", js1.getRawAxis(4));
       SmartDashboard.putNumber("Heading", getHeading());
       SmartDashboard.putNumber("PoseX", getPose().getX());
       SmartDashboard.putNumber("PoseY", getPose().getY());
+      SmartDashboard.putNumber("Left Vel", getLeftVelocity());
+      SmartDashboard.putNumber("Right Vel", getRightVelocity());
     }
 
   @Override
@@ -110,6 +107,14 @@ public class DriveSubsystem extends SubsystemBase {
     m_drive.tankDrive(-left * 0.7, -right * 0.7);
   }
 
+  public void setLeftSpeed(double speed) {
+    leftGroup.set(speed);
+  }
+
+  public void setRightSpeed(double speed) {
+    rightGroup.set(speed);
+  }
+
   public void setMotor2zero() {
     m_drive.arcadeDrive(0, 0);
   }
@@ -125,8 +130,7 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void resetEncoders() {
-    m_leftEncoder.setPosition(0);
-    m_rightEncoder.setPosition(0);
+    m_leftEncoder.setPosition(0, 50);
   }
 
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {

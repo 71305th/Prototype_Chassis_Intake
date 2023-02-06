@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.Chassis.PathFollowingRamsete;
-import frc.robot.commands.Chassis.SetPoint;
+import frc.robot.commands.Chassis.LockPID;
 import frc.robot.commands.Intake.IntakeCmd;
 import frc.robot.commands.Intake.IntakeEnums.IntakeAction;
 import frc.robot.commands.Intake.IntakeEnums.IntakeSide;
@@ -39,7 +39,7 @@ public class RobotContainer {
   // private final IntakeSubsystem m_intake = new IntakeSubsystem();
 
   // Chassis Commands
-  private final SetPoint m_setPoint = new SetPoint(m_drive);
+  private final LockPID m_setPoint = new LockPID(m_drive);
 
   // Intake Commands
   // private final SequentialCommandGroup m_intakeFrontDownRun = new SequentialCommandGroup(
@@ -77,7 +77,7 @@ public class RobotContainer {
 
     m_drive.setDefaultCommand(new RunCommand(() -> {
       m_drive.tankDrive(
-        driverJoystick.getRawAxis(OIConstants.leftStick_Y), driverJoystick.getRawAxis(OIConstants.rightStick_Y));
+        -driverJoystick.getRawAxis(OIConstants.leftStick_Y), -driverJoystick.getRawAxis(OIConstants.rightStick_Y));
     }, m_drive));
 
     // Configure the button bindings

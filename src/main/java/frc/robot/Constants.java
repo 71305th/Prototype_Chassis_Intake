@@ -43,14 +43,14 @@ public final class Constants {
         public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(kTrackWidthmeters);
 
         // Charge Station
-        public static final double kLockPIDLeftkP = 0.1;
-        public static final double kLockPIDLeftkI = 0.1;
-        public static final double kLockPIDLeftkD = 0.01;
+        public static final double kLockPIDLeftkP = 0.05;
+        public static final double kLockPIDLeftkI = 0.025;
+        public static final double kLockPIDLeftkD = 0.0;
         public static final double kLockPIDLeftiLimit = 0.3;
 
-        public static final double kLockPIDRightkP = 0.1;
-        public static final double kLockPIDRightkI = 0.1;
-        public static final double kLockPIDRightkD = 0.01;
+        public static final double kLockPIDRightkP = 0.05;
+        public static final double kLockPIDRightkI = 0.025;
+        public static final double kLockPIDRightkD = 0.0;
         public static final double kLockPIDRightiLimit = 0.3;
     }
     

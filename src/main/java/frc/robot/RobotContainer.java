@@ -72,7 +72,7 @@ public class RobotContainer {
     // Drive
     // m_drive.setDefaultCommand(new RunCommand(() -> {
     //   m_drive.arcadeDrive(
-    //     -driverJoystick.getRawAxis(OIConstants.leftStick_Y), -driverJoystick.getRawAxis(OIConstants.rightStick_X));}
+    //     -driverJoystick.getRawAxis(OIConstants.leftStick_Y), driverJoystick.getRawAxis(OIConstants.rightStick_X));}
     //   , m_drive));
 
     m_drive.setDefaultCommand(new RunCommand(() -> {
@@ -111,7 +111,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     return new SequentialCommandGroup(
-      new PathFollowingRamsete(m_drive, "Pos2-1-C", true), 
+      new PathFollowingRamsete(m_drive, "New Path", true), 
       m_setPoint);
   }
 }

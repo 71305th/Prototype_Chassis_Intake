@@ -76,8 +76,8 @@ public class RobotContainer {
     //   , m_drive));
 
     m_drive.setDefaultCommand(new RunCommand(() -> {
-      m_drive.tankDrive(
-        -driverJoystick.getRawAxis(OIConstants.leftStick_Y), -driverJoystick.getRawAxis(OIConstants.rightStick_Y));
+      m_drive.arcadeDrive(
+        -driverJoystick.getRawAxis(OIConstants.leftStick_Y) * 0.7, -driverJoystick.getRawAxis(OIConstants.rightStick_Y) * 0.7 );
     }, m_drive));
 
     // Configure the button bindings
@@ -93,7 +93,12 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    new JoystickButton(driverJoystick, OIConstants.Btn_A).toggleOnTrue(m_setPoint);
+    new JoystickButton(driverJoystick, OIConstants.Btn_A)
+      .onTrue(m_setPoint);
+
+    new JoystickButton(driverJoystick, OIConstants.Btn_B)
+      .onTrue( new RunCommand( () -> { m_drive.resetEncoders();}, m_drive));
+      
     // new JoystickButton(driverJoystick, OIConstants.Btn_RB).toggleOnTrue(m_intakeFrontDownRun)
     //   .onFalse(m_intakeFrontStopUp);
     // new JoystickButton(driverJoystick, OIConstants.Btn_LB).toggleOnTrue(m_intakeRearDownRun)

@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.OIConstants;
 
 public class DriveSubsystem extends SubsystemBase {
 
@@ -37,6 +38,8 @@ public class DriveSubsystem extends SubsystemBase {
 
   WPI_CANCoder m_leftEncoder = new WPI_CANCoder(DriveConstants.kLeftEncoderPort);
   WPI_CANCoder m_rightEncoder = new WPI_CANCoder(DriveConstants.kRightEncoderPort);
+
+  private final Joystick driverJoystick = new Joystick(0);
 
   DifferentialDriveOdometry m_odometry = 
     new DifferentialDriveOdometry(
@@ -61,13 +64,14 @@ public class DriveSubsystem extends SubsystemBase {
       m_odometry = 
       new DifferentialDriveOdometry(
         m_gyro.getRotation2d(), getLeftRelativeDistance(), getRightRelativeDistance());   
-      SmartDashboard.putNumber("Left Relative Dis", getLeftRelativeDistance());
-      SmartDashboard.putNumber("Right Relative Dis", getRightRelativeDistance());
-      SmartDashboard.putNumber("Heading", getHeading());
-      SmartDashboard.putNumber("PoseX", getPose().getX());
-      SmartDashboard.putNumber("PoseY", getPose().getY());
-      SmartDashboard.putNumber("Left Vel", getLeftVelocity());
-      SmartDashboard.putNumber("Right Vel", getRightVelocity());
+      SmartDashboard.putNumber("LeftDis", getLeftRelativeDistance());
+      SmartDashboard.putNumber("RightDis", getRightRelativeDistance());
+      SmartDashboard.putBoolean("Button", driverJoystick.getRawButton(OIConstants.Btn_A));
+      // SmartDashboard.putNumber("Heading", getHeading());
+      // SmartDashboard.putNumber("PoseX", getPose().getX());
+      // SmartDashboard.putNumber("PoseY", getPose().getY());
+      // SmartDashboard.putNumber("Left Vel", getLeftVelocity());
+      // SmartDashboard.putNumber("Right Vel", getRightVelocity());
     }
 
   @Override
@@ -100,11 +104,11 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void arcadeDrive(double speed, double rotation) {
-    m_drive.arcadeDrive(-speed*0.7, rotation*0.85);
+    m_drive.arcadeDrive( -speed * 0.7, rotation*0.85);
   }
 
   public void tankDrive(double left, double right) {
-    m_drive.tankDrive(-left * 0.7, -right * 0.7);
+    m_drive.tankDrive( -left * 0.7, -right * 0.7);
   }
 
   public void setLeftSpeed(double speed) {
@@ -114,7 +118,7 @@ public class DriveSubsystem extends SubsystemBase {
   public void setRightSpeed(double speed) {
     rightGroup.set(speed);
   }
-
+  
   public void setMotor2zero() {
     m_drive.arcadeDrive(0, 0);
   }
@@ -131,6 +135,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   public void resetEncoders() {
     m_leftEncoder.setPosition(0, 50);
+    m_rightEncoder.setPosition(0,50);
   }
 
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {

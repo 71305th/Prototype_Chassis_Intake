@@ -5,7 +5,6 @@
 package frc.robot;
 
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
-
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -16,6 +15,7 @@ import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
  */
 public final class Constants {
     public static final class DriveConstants {
+
         // Motors
         public static final int motorFrontLeft = 4;
         public static final int motorFrontRight = 1;
@@ -27,9 +27,9 @@ public final class Constants {
         public static final int kRightEncoderPort = 4;
         public static final double kEncoderCPR = 4096;
         public static final double kWheelDiameterMeters = 0.097;
-        public static final double kWheelCircumference = kWheelDiameterMeters*Math.PI;
+        public static final double kWheelCircumference = kWheelDiameterMeters * Math.PI;
         public static final double kGearRatio = 0.12;
-        public static final double kDistancePerPulse = kGearRatio * kWheelCircumference / kEncoderCPR;
+        public static final double kDistancePerPulse = kGearRatio * kWheelCircumference / kEncoderCPR * 100;
         // distancePerPulse = gearRatio * wheelPerimeter / EncoderCPR
 
         // Trajectory Constraints
@@ -41,17 +41,14 @@ public final class Constants {
         // Chassis Related
         public static final double kTrackWidthmeters = 0.595;
         public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(kTrackWidthmeters);
+    }
 
+    public final class PIDConstants {
         // Charge Station
-        public static final double kLockPIDLeftkP = 0.05;
-        public static final double kLockPIDLeftkI = 0.025;
-        public static final double kLockPIDLeftkD = 0.0;
-        public static final double kLockPIDLeftiLimit = 0.3;
-
-        public static final double kLockPIDRightkP = 0.05;
-        public static final double kLockPIDRightkI = 0.025;
-        public static final double kLockPIDRightkD = 0.0;
-        public static final double kLockPIDRightiLimit = 0.3;
+        public static final double kP_Lock = 0.6;
+        public static final double kI_Lock = 0.05;
+        public static final double kD_Lock = 0.000;
+        public static final double iLimit_Lock = 0.36;
     }
     
     public final class AutoConstants {

@@ -60,7 +60,7 @@ public class SetPoint extends CommandBase {
     double disLeft = drive.getLeftRelativeDistance();
     double disRight = drive.getRightRelativeDistance();
 
-    drive.tankDriveVolts(lockPIDLeft.calculate(-disLeft), lockPIDRight.calculate(-disRight));
+    drive.tankDrive(lockPIDLeft.calculate(disLeft, 0), lockPIDRight.calculate(disRight, 0));
   }
 
   // Called once the command ends or is interrupted.

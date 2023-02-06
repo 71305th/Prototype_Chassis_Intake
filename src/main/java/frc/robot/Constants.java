@@ -25,13 +25,11 @@ public final class Constants {
         // Encoders
         public static final int kLeftEncoderPort = 3;
         public static final int kRightEncoderPort = 4;
-        public static final boolean kLeftEncoderReversed = false;
-        public static final boolean kRightEncoderReversed = true;
         public static final double kEncoderCPR = 4096;
         public static final double kWheelDiameterMeters = 0.097;
         public static final double kWheelCircumference = kWheelDiameterMeters*Math.PI;
-        public static final double kGearRatio = 3/25;
-        public static final double kDistancePerPulse = kWheelCircumference/kEncoderCPR/kGearRatio;
+        public static final double kGearRatio = 0.12;
+        public static final double kDistancePerPulse = kGearRatio * kWheelCircumference / kEncoderCPR;
         // distancePerPulse = gearRatio * wheelPerimeter / EncoderCPR
 
         // Trajectory Constraints

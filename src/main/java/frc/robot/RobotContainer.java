@@ -77,7 +77,7 @@ public class RobotContainer {
 
     m_drive.setDefaultCommand(new RunCommand(() -> {
       m_drive.arcadeDrive(
-        -driverJoystick.getRawAxis(OIConstants.leftStick_Y) * 0.7, -driverJoystick.getRawAxis(OIConstants.rightStick_Y) * 0.7 );
+        -driverJoystick.getRawAxis(OIConstants.leftStick_Y) * 0.7, driverJoystick.getRawAxis(OIConstants.rightStick_X) * 0.85 );
     }, m_drive));
 
     // Configure the button bindings
@@ -97,7 +97,7 @@ public class RobotContainer {
       .toggleOnTrue(m_setPoint);
 
     new JoystickButton(driverJoystick, OIConstants.Btn_B)
-      .onTrue( new RunCommand( () -> { m_drive.resetEncoders();}, m_drive));
+      .whileTrue( new RunCommand( () -> { m_drive.resetEncoders();}, m_drive));
       
     // new JoystickButton(driverJoystick, OIConstants.Btn_RB).toggleOnTrue(m_intakeFrontDownRun)
     //   .onFalse(m_intakeFrontStopUp);

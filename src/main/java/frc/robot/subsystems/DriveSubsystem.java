@@ -47,10 +47,10 @@ public class DriveSubsystem extends SubsystemBase {
 
     /** Creates a new ExampleSubsystem. */
   public DriveSubsystem() {
-    m_motorFrontLeft.setInverted(false);
-    m_motorRearLeft.setInverted(false);
-    m_motorFrontRight.setInverted(true);
-    m_motorRearRight.setInverted(true);
+    m_motorFrontLeft.setInverted(true);
+    m_motorRearLeft.setInverted(true);
+    m_motorFrontRight.setInverted(false);
+    m_motorRearRight.setInverted(false);
     resetEncoders();
     m_gyro.reset();
     m_odometry = 
@@ -66,12 +66,11 @@ public class DriveSubsystem extends SubsystemBase {
         m_gyro.getRotation2d(), getLeftRelativeDistance(), getRightRelativeDistance());   
       SmartDashboard.putNumber("LeftDis", getLeftRelativeDistance());
       SmartDashboard.putNumber("RightDis", getRightRelativeDistance());
-      SmartDashboard.putBoolean("Button", driverJoystick.getRawButton(OIConstants.Btn_A));
       // SmartDashboard.putNumber("Heading", getHeading());
       // SmartDashboard.putNumber("PoseX", getPose().getX());
       // SmartDashboard.putNumber("PoseY", getPose().getY());
-      // SmartDashboard.putNumber("Left Vel", getLeftVelocity());
-      // SmartDashboard.putNumber("Right Vel", getRightVelocity());
+      SmartDashboard.putNumber("LeftVel", getLeftVelocity());
+      SmartDashboard.putNumber("RightVel", getRightVelocity());
     }
 
   @Override
@@ -104,11 +103,11 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void arcadeDrive(double speed, double rotation) {
-    m_drive.arcadeDrive( -speed * 0.7, rotation*0.85);
+    m_drive.arcadeDrive(speed * 0.7, -rotation*0.85);
   }
 
   public void tankDrive(double left, double right) {
-    m_drive.tankDrive( -left * 0.7, -right * 0.7);
+    m_drive.tankDrive( left * 0.7, right * 0.7);
   }
 
   public void setLeftSpeed(double speed) {

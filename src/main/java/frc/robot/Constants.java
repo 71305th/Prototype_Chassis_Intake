@@ -45,8 +45,8 @@ public final class Constants {
 
     public final class PIDConstants {
         // Charge Station
-        public static final double kP_Lock = 0.6;
-        public static final double kI_Lock = 0.05;
+        public static final double kP_Lock = 0.3;
+        public static final double kI_Lock = 0.0;
         public static final double kD_Lock = 0.000;
         public static final double iLimit_Lock = 0.36;
     }

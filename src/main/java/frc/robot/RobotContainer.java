@@ -94,7 +94,7 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     new JoystickButton(driverJoystick, OIConstants.Btn_A)
-      .onTrue(m_setPoint);
+      .toggleOnTrue(m_setPoint);
 
     new JoystickButton(driverJoystick, OIConstants.Btn_B)
       .onTrue( new RunCommand( () -> { m_drive.resetEncoders();}, m_drive));

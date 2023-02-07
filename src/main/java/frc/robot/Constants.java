@@ -82,6 +82,7 @@ public final class Constants {
 
     public final class OIConstants {
         // Logitech F310 (X Input Mode)
+        // But for this season we'll use XBOX Controller so we won't need this LMAO
         public static final int leftStick_X = 0;
         public static final int leftStick_Y = 1;
         public static final int rightStick_X = 4;

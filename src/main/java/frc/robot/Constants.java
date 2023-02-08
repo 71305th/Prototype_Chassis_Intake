@@ -35,7 +35,6 @@ public final class Constants {
         public static final double ksVolts = 2.4;
         public static final double kvVoltSecondsPerMeter = 7.2;
         public static final double kaVoltSecondsSquaredPerMeter = 0;
-        public static final double kPDriveVel = 0;
 
         // Chassis Related
         public static final double kTrackWidthmeters = 0.595;
@@ -58,18 +57,6 @@ public final class Constants {
         // Positions
         public static final double kPos1X = 1.86;
         public static final double kPos1Y = 5.01;
-    }
-
-    public final class IntakeFrontConstants {
-        public static final int motorLeft = 0;
-        public static final int motorRight = 0;
-        public static final int wheelSpeedVolt = 0;
-    }
-
-    public final class IntakeRearConstants {
-        public static final int motorLeft = 0;
-        public static final int motorRight = 0;
-        public static final int wheelSpeedVolt = 0;
     }
 
     public final class PneumaticsConstants {

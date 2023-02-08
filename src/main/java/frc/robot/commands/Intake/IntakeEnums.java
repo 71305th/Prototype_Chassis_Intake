@@ -2,10 +2,8 @@ package frc.robot.commands.Intake;
 
 public class IntakeEnums {
     public enum IntakeAction {
-        UP,
-        DOWN,
-        OPEN,
-        CLOSE,
+        UPDOWN,
+        OPENCLOSE,
     }
     public enum IntakeSide {
         FRONT,

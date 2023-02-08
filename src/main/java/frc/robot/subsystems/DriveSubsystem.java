@@ -120,11 +120,11 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void arcadeDrive(double speed, double rotation) {
-    m_drive.arcadeDrive(speed * 0.7, -rotation * 0.7);
+    m_drive.arcadeDrive(speed, -rotation);
   }
 
   public void tankDrive(double left, double right) {
-    m_drive.tankDrive( left * 0.7, right * 0.7);
+    m_drive.tankDrive(left, right);
   }
 
   public void setLeftSpeed(double speed) {

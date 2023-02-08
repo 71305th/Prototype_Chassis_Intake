@@ -36,34 +36,22 @@ public class IntakeCmd extends CommandBase {
     switch (side) {
       case FRONT:
         switch (action) {
-          case UP:
-            intake.frontUp();
-            break;
-          case DOWN:
+          case UPDOWN:
             intake.frontDown();
             break;
-          case OPEN:
+          case OPENCLOSE:
             intake.frontOpen();
-            break;
-          case CLOSE:
-            intake.enableCompressor();
             break;
         }
         System.out.println("IntakeCmd executed.");
         break;
       case REAR:
         switch (action) {
-          case UP:
-            intake.RearUp();
-            break;
-          case DOWN:
+          case UPDOWN:
             intake.RearDown();
             break;
-          case OPEN:
+          case OPENCLOSE:
             intake.RearOpen();
-            break;
-          case CLOSE:
-            intake.enableCompressor();
             break;
         }
         System.out.println("IntakeCmd executed.");
@@ -77,6 +65,33 @@ public class IntakeCmd extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    switch (side) {
+      case FRONT:
+        switch (action) {
+          case UPDOWN:
+            intake.frontUp();
+            break;
+          case OPENCLOSE:
+            intake.frontClose();
+            break;
+        }
+        System.out.println("IntakeCmd executed.");
+        break;
+      case REAR:
+        switch (action) {
+          case UPDOWN:
+            intake.RearUp();
+            break;
+          case OPENCLOSE:
+            intake.RearClose();
+            break;
+        }
+        System.out.println("IntakeCmd executed.");
+        break;
+      default:
+        System.out.println("IntakeCmd failed.");
+        break;
+    }
   }
 
   // Returns true when the command should end.

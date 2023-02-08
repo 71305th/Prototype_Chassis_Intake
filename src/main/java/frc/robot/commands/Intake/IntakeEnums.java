@@ -6,8 +6,6 @@ public class IntakeEnums {
         DOWN,
         OPEN,
         CLOSE,
-        RUN,
-        STOP,
     }
     public enum IntakeSide {
         FRONT,

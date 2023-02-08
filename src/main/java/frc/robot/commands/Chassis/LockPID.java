@@ -4,18 +4,12 @@
 
 package frc.robot.commands.Chassis;
 
-import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.PIDConstants;
 import frc.robot.subsystems.DriveSubsystem;
 
-import javax.sound.sampled.TargetDataLine;
-
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
@@ -47,9 +41,7 @@ public class LockPID extends CommandBase {
     initL = drive.getLeftRelativeDistance();
     initR = drive.getRightRelativeDistance();
     isEnd = false;
-    // lockPIDLeft.setTolerance(0, 0);
-    // lockPIDRight.setTolerance(0, 0);
-    System.out.println("LockPID Enabled");
+    System.out.println("LockPID enabled.");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -72,19 +64,13 @@ public class LockPID extends CommandBase {
 
     drive.setLeftSpeed( LeftOutput );
     drive.setRightSpeed( RightOutput );
-
-    // System.out.print("LeftOutput : ");
-    // System.out.println(LeftOutput);
-
-    // System.out.print("RightOutput : ");
-    // System.out.println(RightOutput);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     stop();
-    System.out.println("LockPID Disabled");
+    System.out.println("LockPID disabled.");
   }
 
   // Returns true when the command should end.
@@ -107,8 +93,6 @@ public class LockPID extends CommandBase {
     output = kP * error + kI * i + kD * d;
     lasttime = time;
     lastError = error;
-    System.out.println("dt" + deltaT);
-    //System.out.println("error" + error);
     return output;
   }
 

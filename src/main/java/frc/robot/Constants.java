@@ -56,8 +56,8 @@ public final class Constants {
         public static final double kMaxAccelerationMetersPerSecondSquared = 3;
 
         // Positions
-        public static final double kPos1X = 0;
-        public static final double kPos1Y = 0;
+        public static final double kPos1X = 1.86;
+        public static final double kPos1Y = 5.01;
     }
 
     public final class IntakeFrontConstants {

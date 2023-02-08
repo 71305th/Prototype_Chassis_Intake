@@ -16,8 +16,6 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
-import frc.robot.commands.Chassis.PathFollowingRamsete;
-import frc.robot.commands.Chassis.Burst;
 import frc.robot.commands.Chassis.LockPID;
 import frc.robot.commands.Intake.IntakeCmd;
 import frc.robot.commands.Intake.IntakeEnums.IntakeAction;
@@ -103,9 +101,6 @@ public class RobotContainer {
   private void configureButtonBindings() {
     new JoystickButton(driverJoystick, OIConstants.Btn_A)
       .toggleOnTrue(m_setPoint);
-
-    new JoystickButton(driverJoystick, OIConstants.Btn_B)
-      .whileTrue( new RunCommand( () -> { m_drive.resetEncoders();}, m_drive));
       
     // new JoystickButton(driverJoystick, OIConstants.Btn_RB).toggleOnTrue(m_intakeFrontDownRun)
     //   .onFalse(m_intakeFrontStopUp);

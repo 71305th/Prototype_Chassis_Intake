@@ -67,9 +67,6 @@ public class LockPID extends CommandBase {
     double trueL = distLeft - initL;
     double trueR = distRight - initR;
 
-    System.out.println("dL" + distLeft);
-    System.out.println("dR" + distRight);
-
     double LeftOutput = PID( PIDConstants.kP_Lock, PIDConstants.kI_Lock, PIDConstants.kD_Lock, PIDConstants.iLimit_Lock, trueL, 0 );
     double RightOutput = PID( PIDConstants.kP_Lock, PIDConstants.kI_Lock, PIDConstants.kD_Lock, PIDConstants.iLimit_Lock, trueR, 0 );
 
@@ -102,9 +99,7 @@ public class LockPID extends CommandBase {
     double i = 0;
     double time = Timer.getFPGATimestamp();
     double deltaT = time - lasttime;
-    //double deltaError = error / deltaT;
     double d = (lastError - error) / deltaT;
-    // double rate = ( drive.getLeftVelocity() + drive.getRightVelocity() ) / 2;
 
     if (error < Math.abs(iLimit)) i += error;
     else i = 0;
@@ -112,7 +107,8 @@ public class LockPID extends CommandBase {
     output = kP * error + kI * i + kD * d;
     lasttime = time;
     lastError = error;
-    System.out.println("error" + error);
+    System.out.println("dt" + deltaT);
+    //System.out.println("error" + error);
     return output;
   }
 

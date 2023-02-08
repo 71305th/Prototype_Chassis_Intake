@@ -4,13 +4,20 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.commands.PPRamseteCommand;
 import com.pathplanner.lib.server.PathPlannerServer;
 
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.RamseteController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.Chassis.PathFollowingRamsete;
+import frc.robot.commands.Chassis.Burst;
 import frc.robot.commands.Chassis.LockPID;
 import frc.robot.commands.Intake.IntakeCmd;
 import frc.robot.commands.Intake.IntakeEnums.IntakeAction;
@@ -18,6 +25,7 @@ import frc.robot.commands.Intake.IntakeEnums.IntakeSide;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -77,7 +85,7 @@ public class RobotContainer {
 
     m_drive.setDefaultCommand(new RunCommand(() -> {
       m_drive.arcadeDrive(
-        -driverJoystick.getRawAxis(OIConstants.leftStick_Y) * 0.7, driverJoystick.getRawAxis(OIConstants.rightStick_X) * 0.85 );
+        -driverJoystick.getRawAxis(OIConstants.leftStick_Y) * 1, driverJoystick.getRawAxis(OIConstants.rightStick_X) * 0.85 );
     }, m_drive));
 
     // Configure the button bindings
@@ -115,8 +123,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return new SequentialCommandGroup(
-      new PathFollowingRamsete(m_drive, "New Path", true), 
-      m_setPoint);
+    return m_drive.followTrajectoryCommand("New Path", true);
   }
 }

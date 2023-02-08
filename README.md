@@ -16,6 +16,13 @@ Commiter: **Hong**
 
 2. Clean unused codes: Remove unused imports, functions, constants and something like that.
 
+## Changes
+
+1. Corrected motor reverses
+2. Finish LockPID function but may still need some adjustment
+3. Finish Ramsete PathFollowing Cmd, waiting for test
+4. Finish intake code
+
 # v1.0 LockPID Code Finish & Some Code Optimization
 
 Commiter : **Moyu**

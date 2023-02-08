@@ -21,7 +21,7 @@ Commiter: **Hong**
 1. Corrected motor reverses
 2. Finish LockPID function but may still need some adjustment
 3. Finish Ramsete PathFollowing Cmd, waiting for test
-4. Finish intake code
+4. Finish intake code, waiting for test
 
 # v1.0 LockPID Code Finish & Some Code Optimization
 

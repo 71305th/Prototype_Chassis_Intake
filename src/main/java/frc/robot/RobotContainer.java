@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.Chassis.LockPID;
+import frc.robot.commands.Chassis.ResetGyro;
 import frc.robot.commands.Intake.IntakeCmd;
 import frc.robot.commands.Intake.IntakeEnums.IntakeAction;
 import frc.robot.commands.Intake.IntakeEnums.IntakeSide;
@@ -33,16 +34,16 @@ public class RobotContainer {
 
   // Subsystems
   private final DriveSubsystem m_drive = new DriveSubsystem();
-  private final IntakeSubsystem m_intake = new IntakeSubsystem();
+  // private final IntakeSubsystem m_intake = new IntakeSubsystem();
 
   // Chassis Commands
   private final LockPID m_setPoint = new LockPID(m_drive);
 
   // Intake Commands
-  private final IntakeCmd m_intakeFrontDownUp = new IntakeCmd(m_intake, IntakeSide.FRONT, IntakeAction.UPDOWN);
-  private final IntakeCmd m_intakeFrontOpenClose = new IntakeCmd(m_intake, IntakeSide.FRONT, IntakeAction.OPENCLOSE);
-  private final IntakeCmd m_intakeRearDownUp = new IntakeCmd(m_intake, IntakeSide.REAR, IntakeAction.UPDOWN);
-  private final IntakeCmd m_intakeRearOpenClose = new IntakeCmd(m_intake, IntakeSide.REAR, IntakeAction.OPENCLOSE);
+  // private final IntakeCmd m_intakeFrontDownUp = new IntakeCmd(m_intake, IntakeSide.FRONT, IntakeAction.UPDOWN);
+  // private final IntakeCmd m_intakeFrontOpenClose = new IntakeCmd(m_intake, IntakeSide.FRONT, IntakeAction.OPENCLOSE);
+  // private final IntakeCmd m_intakeRearDownUp = new IntakeCmd(m_intake, IntakeSide.REAR, IntakeAction.UPDOWN);
+  // private final IntakeCmd m_intakeRearOpenClose = new IntakeCmd(m_intake, IntakeSide.REAR, IntakeAction.OPENCLOSE);
 
   
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -55,14 +56,8 @@ public class RobotContainer {
 
     // Arcade Drive
     m_drive.setDefaultCommand(new RunCommand(() -> {
-      // Boost Button
-      if (driverJoystick.getRawAxis(OIConstants.Btn_RB) >= 1) {
-        m_drive.arcadeDrive(
-          -driverJoystick.getRawAxis(OIConstants.leftStick_Y) * 0.8, driverJoystick.getRawAxis(OIConstants.rightStick_X) * 0.95);
-      } else {
         m_drive.arcadeDrive(
           -driverJoystick.getRawAxis(OIConstants.leftStick_Y) * 0.7, driverJoystick.getRawAxis(OIConstants.rightStick_X) * 0.85);
-      }
     }, m_drive));
 
     // Configure the button bindings
@@ -81,13 +76,15 @@ public class RobotContainer {
     new JoystickButton(driverJoystick, OIConstants.Btn_A)
       .toggleOnTrue(m_setPoint);
     new JoystickButton(driverJoystick, OIConstants.Btn_B)
-      .toggleOnTrue(m_intakeFrontDownUp);
-    new JoystickButton(driverJoystick, OIConstants.Btn_Y)
-      .toggleOnTrue(m_intakeRearDownUp);
-    new JoystickButton(driverJoystick, OIConstants.trigger_R)
-      .toggleOnTrue(m_intakeFrontOpenClose);
-    new JoystickButton(driverJoystick, OIConstants.trigger_L)
-      .toggleOnTrue(m_intakeRearOpenClose);
+      .onTrue(new ResetGyro(m_drive));
+    // new JoystickButton(driverJoystick, OIConstants.Btn_B)
+    //   .toggleOnTrue(m_intakeFrontDownUp);
+    // new JoystickButton(driverJoystick, OIConstants.Btn_Y)
+    //   .toggleOnTrue(m_intakeRearDownUp);
+    // new JoystickButton(driverJoystick, OIConstants.trigger_R)
+    //   .toggleOnTrue(m_intakeFrontOpenClose);
+    // new JoystickButton(driverJoystick, OIConstants.trigger_L)
+    //   .toggleOnTrue(m_intakeRearOpenClose);
   }
 
   /**

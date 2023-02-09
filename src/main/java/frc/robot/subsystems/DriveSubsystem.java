@@ -50,8 +50,8 @@ public class DriveSubsystem extends SubsystemBase {
   WPI_CANCoder m_rightEncoder = new WPI_CANCoder(DriveConstants.kRightEncoderPort);
 
   DifferentialDriveOdometry m_odometry = new DifferentialDriveOdometry(
-    m_gyro.getRotation2d(), getLeftRelativeDistance(), getRightRelativeDistance(), 
-    new Pose2d(AutoConstants.kPos1X, AutoConstants.kPos1Y, new Rotation2d()));
+    m_gyro.getRotation2d(), getLeftRelativeDistance(), getRightRelativeDistance(), new Pose2d(
+      AutoConstants.kPos1X, AutoConstants.kPos1Y, new Rotation2d()));
 
   /** Creates a new ExampleSubsystem. */
   public DriveSubsystem() {
@@ -60,7 +60,10 @@ public class DriveSubsystem extends SubsystemBase {
     m_motorFrontRight.setInverted(false);
     m_motorRearRight.setInverted(false);
     resetEncoders();
-    m_gyro.reset();
+    zeroHeading();
+    m_odometry = new DifferentialDriveOdometry(
+    m_gyro.getRotation2d(), getLeftRelativeDistance(), getRightRelativeDistance(), new Pose2d(
+      AutoConstants.kPos1X, AutoConstants.kPos1Y, new Rotation2d()));
   }
 
   @Override
@@ -76,14 +79,13 @@ public class DriveSubsystem extends SubsystemBase {
     // SmartDashboard.putNumber("RightVel", getRightVelocity());
     // System.out.println(getAverageVelocity());
 
-    // Get the rotation of the robot from the gyro.
-    var gyroAngle = m_gyro.getRotation2d();
     // Update the pose
-    m_odometry.update(gyroAngle,
+    m_odometry.update(m_gyro.getRotation2d(),
     getLeftRelativeDistance(),
     getRightRelativeDistance());
       
     System.out.println(m_odometry.getPoseMeters().getX() + ", " + m_odometry.getPoseMeters().getY() + ", " + m_odometry.getPoseMeters().getRotation().getDegrees());
+    System.out.println("Heading: " + getHeading());
   }
 
   @Override

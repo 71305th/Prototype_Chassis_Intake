@@ -32,6 +32,7 @@ public class LockPID extends CommandBase {
     this.drive = drive;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drive);
+    isEnd = true;
   }
 
   // Called when the command is initially scheduled.

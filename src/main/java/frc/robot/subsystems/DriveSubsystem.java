@@ -10,6 +10,7 @@ import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.PathPlannerTrajectory.PathPlannerState;
 import com.pathplanner.lib.commands.PPRamseteCommand;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -21,18 +22,29 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.SPI.Port;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 
 public class DriveSubsystem extends SubsystemBase {
+
+  double initLeftPos;
+  double initRightPos;
+  double initHeading;
+  double currentHeading;
+  double initT = Timer.getFPGATimestamp();
+  boolean isFirstTime = true;
+
+  PathPlannerTrajectory traj;
 
   CANSparkMax m_motorFrontLeft = new CANSparkMax(DriveConstants.motorFrontLeft, MotorType.kBrushless);
   CANSparkMax m_motorFrontRight = new CANSparkMax(DriveConstants.motorFrontRight, MotorType.kBrushless);
@@ -59,12 +71,16 @@ public class DriveSubsystem extends SubsystemBase {
     m_motorRearLeft.setInverted(true);
     m_motorFrontRight.setInverted(false);
     m_motorRearRight.setInverted(false);
-    resetEncoders();
-    m_gyro.reset();
+
+    initLeftPos = m_leftEncoder.getPosition();
+    initRightPos = m_rightEncoder.getPosition();
+
+    m_gyro.calibrate();
   }
 
   @Override
   public void periodic() {
+
     // This method will be called once per scheduler run
 
     // SmartDashboard.putNumber("LeftDis", getLeftRelativeDistance());
@@ -82,8 +98,28 @@ public class DriveSubsystem extends SubsystemBase {
     m_odometry.update(gyroAngle,
     getLeftRelativeDistance(),
     getRightRelativeDistance());
-      
-    System.out.println(m_odometry.getPoseMeters().getX() + ", " + m_odometry.getPoseMeters().getY() + ", " + m_odometry.getPoseMeters().getRotation().getDegrees());
+
+    if (isFirstTime){
+      traj = PathPlanner.loadPath(
+        "New Path", new PathConstraints(
+          AutoConstants.kMaxSpeedMetersPerSecond, AutoConstants.kMaxAccelerationMetersPerSecondSquared));
+      isFirstTime = false;
+    }
+    if (Timer.getFPGATimestamp() < 0.5){
+      initT = Timer.getFPGATimestamp();}
+    else {
+      double dT = Timer.getFPGATimestamp() - initT;
+      if (dT <= traj.getTotalTimeSeconds()){
+        PathPlannerState state = (PathPlannerState) traj.sample(dT);
+        System.out.println(state.velocityMetersPerSecond);  
+      }
+    }
+
+
+
+   
+    // System.out.println(m_odometry.getPoseMeters().getX() + ", " + m_odometry.getPoseMeters().getY() + ", " + m_odometry.getPoseMeters().getRotation().getDegrees());
+    // System.out.println("Heading: " + m_gyro.getRotation2d().getDegrees());
   }
 
   @Override
@@ -92,19 +128,11 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public double getLeftRelativeDistance() {
-    return m_leftEncoder.getPosition() * DriveConstants.kDistancePerPulse;
+    return (m_leftEncoder.getPosition() - initLeftPos) * DriveConstants.kDistancePerPulse;
   }
 
   public double getRightRelativeDistance() {
-    return m_rightEncoder.getPosition() * DriveConstants.kDistancePerPulse;
-  }
-
-  public double getleftAbsoluteDistance() {
-    return m_leftEncoder.getAbsolutePosition() * DriveConstants.kDistancePerPulse;
-  }
-
-  public double getRightAbsoluteDistance() {
-    return m_rightEncoder.getAbsolutePosition() * DriveConstants.kDistancePerPulse;
+    return (m_rightEncoder.getPosition() - initRightPos) * DriveConstants.kDistancePerPulse;
   }
 
   public double getLeftVelocity() {
@@ -217,7 +245,7 @@ public class DriveSubsystem extends SubsystemBase {
   // Assuming this method is part of a drivetrain subsystem that provides the necessary methods
   public Command followTrajectoryCommand(String trajName, boolean isFirstPath) {
 
-    PathPlannerTrajectory traj = PathPlanner.loadPath(
+    traj = PathPlanner.loadPath(
       trajName, new PathConstraints(
         AutoConstants.kMaxSpeedMetersPerSecond, AutoConstants.kMaxAccelerationMetersPerSecondSquared));
 
@@ -234,7 +262,7 @@ public class DriveSubsystem extends SubsystemBase {
             new RamseteController(),
             new SimpleMotorFeedforward(DriveConstants.ksVolts, 
               DriveConstants.kvVoltSecondsPerMeter, DriveConstants.kaVoltSecondsSquaredPerMeter),
-            DriveConstants.kDriveKinematics, // DifferentialDriveKinematics
+              DriveConstants.kDriveKinematics, // DifferentialDriveKinematics
             this::getWheelSpeeds, // DifferentialDriveWheelSpeeds supplier
             new PIDController(0, 0, 0), // Left controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
             new PIDController(0, 0, 0), // Right controller (usually the same values as left controller)

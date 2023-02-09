@@ -51,8 +51,8 @@ public final class Constants {
     
     public final class AutoConstants {
         // Feed forward shit
-        public static final double kMaxSpeedMetersPerSecond = 2.5;
-        public static final double kMaxAccelerationMetersPerSecondSquared = 3;
+        public static final double kMaxSpeedMetersPerSecond = 1;
+        public static final double kMaxAccelerationMetersPerSecondSquared = 0.8;
 
         // Positions
         public static final double kPos1X = 1.86;

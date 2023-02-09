@@ -243,33 +243,33 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   // Assuming this method is part of a drivetrain subsystem that provides the necessary methods
-  public Command followTrajectoryCommand(String trajName, boolean isFirstPath) {
+  // public Command followTrajectoryCommand(String trajName, boolean isFirstPath) {
 
-    traj = PathPlanner.loadPath(
-      trajName, new PathConstraints(
-        AutoConstants.kMaxSpeedMetersPerSecond, AutoConstants.kMaxAccelerationMetersPerSecondSquared));
+  //   traj = PathPlanner.loadPath(
+  //     trajName, new PathConstraints(
+  //       AutoConstants.kMaxSpeedMetersPerSecond, AutoConstants.kMaxAccelerationMetersPerSecondSquared));
 
-    return new SequentialCommandGroup(
-        new InstantCommand(() -> {
-          // Reset odometry for the first path you run during auto
-          if(isFirstPath){
-              this.resetOdometry(traj.getInitialPose());
-          }
-        }),
-        new PPRamseteCommand(
-            traj, 
-            this::getPose, // Pose supplier
-            new RamseteController(),
-            new SimpleMotorFeedforward(DriveConstants.ksVolts, 
-              DriveConstants.kvVoltSecondsPerMeter, DriveConstants.kaVoltSecondsSquaredPerMeter),
-              DriveConstants.kDriveKinematics, // DifferentialDriveKinematics
-            this::getWheelSpeeds, // DifferentialDriveWheelSpeeds supplier
-            new PIDController(0, 0, 0), // Left controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
-            new PIDController(0, 0, 0), // Right controller (usually the same values as left controller)
-            this::tankDriveVolts, // Voltage biconsumer
-            true, // Should the path be automatically mirrored depending on alliance color. Optional, defaults to true
-            this // Requires this drive subsystem
-        )
-    );
-  }
+  //   return new SequentialCommandGroup(
+  //       new InstantCommand(() -> {
+  //         // Reset odometry for the first path you run during auto
+  //         if(isFirstPath){
+  //             this.resetOdometry(traj.getInitialPose());
+  //         }
+  //       }),
+  //       new PPRamseteCommand(
+  //           traj, 
+  //           this::getPose, // Pose supplier
+  //           new RamseteController(),
+  //           new SimpleMotorFeedforward(DriveConstants.ksVolts, 
+  //             DriveConstants.kvVoltSecondsPerMeter, DriveConstants.kaVoltSecondsSquaredPerMeter),
+  //             DriveConstants.kDriveKinematics, // DifferentialDriveKinematics
+  //           this::getWheelSpeeds, // DifferentialDriveWheelSpeeds supplier
+  //           new PIDController(0, 0, 0), // Left controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
+  //           new PIDController(0, 0, 0), // Right controller (usually the same values as left controller)
+  //           this::tankDriveVolts, // Voltage biconsumer
+  //           true, // Should the path be automatically mirrored depending on alliance color. Optional, defaults to true
+  //           this // Requires this drive subsystem
+  //       )
+  //   );
+  // }
 }

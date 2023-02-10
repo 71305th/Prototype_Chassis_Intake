@@ -128,7 +128,7 @@ public class DriveSubsystem extends SubsystemBase {
   public void tankDrive(double left, double right) {
     if( left > 0.75 ) left = 0.75;
     if( right > 0.85 ) right = 0.7;
-    m_drive.tankDrive( -left * 0.7, -right * 0.7);
+    m_drive.tankDrive( -left, -right );
   }
 
   public void setLeftSpeed(double speed) {

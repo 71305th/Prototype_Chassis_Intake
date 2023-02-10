@@ -12,7 +12,7 @@ new JoystickButton(driverJoystick, OIConstants.Btn_A)
     .onTrue(m_setPoint);
 
 new JoystickButton(driverJoystick, OIConstants.Btn_B)
-    .onTrue( new RunCommand( () -> { m_drive.resetEncoders();}, m_drive));
+    .onTrue( new RunCommand( () -> { m_drive.resetEncoders(); }, m_drive));
 ```
 
 2. Add ResetEncoder() in `LockID -> Intake`

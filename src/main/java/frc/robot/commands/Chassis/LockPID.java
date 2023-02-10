@@ -4,18 +4,12 @@
 
 package frc.robot.commands.Chassis;
 
-import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.PIDConstants;
 import frc.robot.subsystems.DriveSubsystem;
 
-import javax.sound.sampled.TargetDataLine;
-
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
@@ -23,10 +17,11 @@ public class LockPID extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
 
   private final DriveSubsystem drive;
-
+  private double lastError = 0;
   private boolean isEnd = false;
   private double lasttime = 0;
-  private Joystick driverJoystick = new Joystick(OIConstants.driverJoystick);
+  private double initL = 0;
+  private double initR = 0;
 
   /**
    * Creates a new ExampleCommand.
@@ -44,41 +39,36 @@ public class LockPID extends CommandBase {
   public void initialize() {
     drive.resetEncoders();
     drive.setMotor2zero();
+    initL = drive.getLeftRelativeDistance();
+    initR = drive.getRightRelativeDistance();
     isEnd = false;
-    // lockPIDLeft.setTolerance(0, 0);
-    // lockPIDRight.setTolerance(0, 0);
-    System.out.println("LockPID Enabled");
+    System.out.println("LockPID enabled.");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if ( Math.abs(driverJoystick.getRawAxis(OIConstants.leftStick_Y)) > 0.1 ) stop();
-    if ( Math.abs(driverJoystick.getRawAxis(OIConstants.rightStick_X)) > 0.1 ) stop();
+    // if ( Math.abs(driverJoystick.getRawAxis(OIConstants.leftStick_Y)) > 0.1 ) stop();
+    // if ( Math.abs(driverJoystick.getRawAxis(OIConstants.rightStick_X)) > 0.1 ) stop();
 
-    System.out.println("Enter");
+    double distLeft = drive.getLeftRelativeDistance();
+    double distRight = drive.getRightRelativeDistance();
 
-    double disLeft = drive.getLeftRelativeDistance();
-    double disRight = drive.getRightRelativeDistance();
+    double trueL = distLeft - initL;
+    double trueR = distRight - initR;
 
-    double LeftOutput = -PID( PIDConstants.kP_Lock, PIDConstants.kI_Lock, PIDConstants.kD_Lock, PIDConstants.iLimit_Lock, disLeft, 0 );
-    double RightOutput = -PID( PIDConstants.kP_Lock, PIDConstants.kI_Lock, PIDConstants.kD_Lock, PIDConstants.iLimit_Lock, disRight, 0 );
+    double LeftOutput = PID( PIDConstants.kP_Lock, PIDConstants.kI_Lock, PIDConstants.kD_Lock, PIDConstants.iLimit_Lock, trueL, 0 );
+    double RightOutput = PID( PIDConstants.kP_Lock, PIDConstants.kI_Lock, PIDConstants.kD_Lock, PIDConstants.iLimit_Lock, trueR, 0 );
 
     drive.setLeftSpeed( LeftOutput );
     drive.setRightSpeed( RightOutput );
-
-    // System.out.print("LeftOutput : ");
-    // System.out.println(LeftOutput);
-
-    // System.out.print("RightOutput : ");
-    // System.out.println(RightOutput);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     stop();
-    System.out.println("LockPID Disabled");
+    System.out.println("LockPID disabled.");
   }
 
   // Returns true when the command should end.
@@ -90,16 +80,17 @@ public class LockPID extends CommandBase {
   public double PID ( double kP, double kI, double kD, double iLimit, double ctrPos, double target ) {
     double output = 0;
     double error = target - ctrPos;
-    double error_sum = 0;
+    double i = 0;
     double time = Timer.getFPGATimestamp();
     double deltaT = time - lasttime;
-    double deltaError = error / deltaT;
+    double d = (lastError - error) / deltaT;
 
-    if( ctrPos < target + iLimit || ctrPos > target - iLimit ) error_sum += error;
-    
-    output = kP * error + kI * error_sum + kD * deltaError;
+    if (error < Math.abs(iLimit)) i += error;
+    else i = 0;
+
+    output = kP * error + kI * i + kD * d;
     lasttime = time;
-
+    lastError = error;
     return output;
   }
 

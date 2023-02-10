@@ -7,20 +7,30 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix.sensors.WPI_CANCoder;
 import com.kauailabs.navx.frc.AHRS;
+import com.pathplanner.lib.PathConstraints;
+import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.commands.PPRamseteCommand;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.RamseteController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SPI.Port;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
-import frc.robot.Constants.OIConstants;
 
 public class DriveSubsystem extends SubsystemBase {
 
@@ -39,40 +49,42 @@ public class DriveSubsystem extends SubsystemBase {
   WPI_CANCoder m_leftEncoder = new WPI_CANCoder(DriveConstants.kLeftEncoderPort);
   WPI_CANCoder m_rightEncoder = new WPI_CANCoder(DriveConstants.kRightEncoderPort);
 
-  private final Joystick driverJoystick = new Joystick(0);
+  DifferentialDriveOdometry m_odometry = new DifferentialDriveOdometry(
+    m_gyro.getRotation2d(), getLeftRelativeDistance(), getRightRelativeDistance(), 
+    new Pose2d(AutoConstants.kPos1X, AutoConstants.kPos1Y, new Rotation2d()));
 
-  DifferentialDriveOdometry m_odometry = 
-    new DifferentialDriveOdometry(
-      m_gyro.getRotation2d(), getLeftRelativeDistance(), getRightRelativeDistance());
-
-    /** Creates a new ExampleSubsystem. */
+  /** Creates a new ExampleSubsystem. */
   public DriveSubsystem() {
-    m_motorFrontLeft.setInverted(false);
-    m_motorRearLeft.setInverted(false);
-    m_motorFrontRight.setInverted(true);
-    m_motorRearRight.setInverted(true);
+    m_motorFrontLeft.setInverted(true);
+    m_motorRearLeft.setInverted(true);
+    m_motorFrontRight.setInverted(false);
+    m_motorRearRight.setInverted(false);
     resetEncoders();
     m_gyro.reset();
-    m_odometry = 
-      new DifferentialDriveOdometry(
-        m_gyro.getRotation2d(), getLeftRelativeDistance(), getRightRelativeDistance());
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-      m_odometry = 
-      new DifferentialDriveOdometry(
-        m_gyro.getRotation2d(), getLeftRelativeDistance(), getRightRelativeDistance());   
-      SmartDashboard.putNumber("LeftDis", getLeftRelativeDistance());
-      SmartDashboard.putNumber("RightDis", getRightRelativeDistance());
-      SmartDashboard.putBoolean("Button", driverJoystick.getRawButton(OIConstants.Btn_A));
-      // SmartDashboard.putNumber("Heading", getHeading());
-      // SmartDashboard.putNumber("PoseX", getPose().getX());
-      // SmartDashboard.putNumber("PoseY", getPose().getY());
-      // SmartDashboard.putNumber("Left Vel", getLeftVelocity());
-      // SmartDashboard.putNumber("Right Vel", getRightVelocity());
-    }
+
+    // SmartDashboard.putNumber("LeftDis", getLeftRelativeDistance());
+    // SmartDashboard.putNumber("RightDis", getRightRelativeDistance());
+    // SmartDashboard.putNumber("Heading", getHeading());
+    // SmartDashboard.putNumber("PoseX", getPose().getX());
+    // SmartDashboard.putNumber("PoseY", getPose().getY());
+    // SmartDashboard.putNumber("LeftVel", getLeftVelocity());
+    // SmartDashboard.putNumber("RightVel", getRightVelocity());
+    // System.out.println(getAverageVelocity());
+
+    // Get the rotation of the robot from the gyro.
+    var gyroAngle = m_gyro.getRotation2d();
+    // Update the pose
+    m_odometry.update(gyroAngle,
+    getLeftRelativeDistance(),
+    getRightRelativeDistance());
+      
+    System.out.println(m_odometry.getPoseMeters().getX() + ", " + m_odometry.getPoseMeters().getY() + ", " + m_odometry.getPoseMeters().getRotation().getDegrees());
+  }
 
   @Override
   public void simulationPeriodic() {
@@ -101,6 +113,10 @@ public class DriveSubsystem extends SubsystemBase {
 
   public double getRightVelocity() {
     return m_rightEncoder.getVelocity() * DriveConstants.kDistancePerPulse;
+  }
+
+  public double getAverageVelocity() {
+    return ( getLeftVelocity() + getRightVelocity() ) / 2;
   }
 
   public void arcadeDrive(double speed, double rotation) {
@@ -138,8 +154,8 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void resetEncoders() {
-    m_leftEncoder.setPosition(0, 50);
-    m_rightEncoder.setPosition(0,50);
+    m_leftEncoder.setPosition(0);
+    m_rightEncoder.setPosition(0);
   }
 
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {
@@ -200,5 +216,36 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public double getTurnRate() {
     return -m_gyro.getRate();
+  }
+
+  // Assuming this method is part of a drivetrain subsystem that provides the necessary methods
+  public Command followTrajectoryCommand(String trajName, boolean isFirstPath) {
+
+    PathPlannerTrajectory traj = PathPlanner.loadPath(
+      trajName, new PathConstraints(
+        AutoConstants.kMaxSpeedMetersPerSecond, AutoConstants.kMaxAccelerationMetersPerSecondSquared));
+
+    return new SequentialCommandGroup(
+        new InstantCommand(() -> {
+          // Reset odometry for the first path you run during auto
+          if(isFirstPath){
+              this.resetOdometry(traj.getInitialPose());
+          }
+        }),
+        new PPRamseteCommand(
+            traj, 
+            this::getPose, // Pose supplier
+            new RamseteController(),
+            new SimpleMotorFeedforward(DriveConstants.ksVolts, 
+              DriveConstants.kvVoltSecondsPerMeter, DriveConstants.kaVoltSecondsSquaredPerMeter),
+            DriveConstants.kDriveKinematics, // DifferentialDriveKinematics
+            this::getWheelSpeeds, // DifferentialDriveWheelSpeeds supplier
+            new PIDController(0, 0, 0), // Left controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
+            new PIDController(0, 0, 0), // Right controller (usually the same values as left controller)
+            this::tankDriveVolts, // Voltage biconsumer
+            true, // Should the path be automatically mirrored depending on alliance color. Optional, defaults to true
+            this // Requires this drive subsystem
+        )
+    );
   }
 }

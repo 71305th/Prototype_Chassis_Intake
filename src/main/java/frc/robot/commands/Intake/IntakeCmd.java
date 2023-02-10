@@ -27,42 +27,7 @@ public class IntakeCmd extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    switch (side) {
-      case FRONT:
-        switch (action) {
-          case UP:
-          case DOWN:
-          case OPEN:
-          case CLOSE:
-            intake.enableCompressor();
-            break;
-          case RUN:
-          case STOP:
-            intake.frontStop();
-          default:
-            System.out.println("IntakeCmd action failed: init");
-            break;
-        }
-        break;
-      case REAR:
-        switch (action) {
-          case UP:
-          case DOWN:
-          case OPEN:
-          case CLOSE:
-            intake.enableCompressor();
-            break;
-          case RUN:
-          case STOP:
-            intake.RearStop();
-          default:
-            System.out.println("IntakeCmd action failed: init");
-            break;
-        }
-        break;
-      default:
-        break;
-    }
+    intake.enableCompressor();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -71,45 +36,28 @@ public class IntakeCmd extends CommandBase {
     switch (side) {
       case FRONT:
         switch (action) {
-          case UP:
-            intake.frontUp();
-          case DOWN:
+          case UPDOWN:
             intake.frontDown();
-          case OPEN:
-            intake.frontOpen();
-          case CLOSE:
-            intake.enableCompressor();
             break;
-          case RUN:
-            intake.frontRun();
-          case STOP:
-            intake.frontStop();
-          default:
-            System.out.println("IntakeCmd action failed: executing");
+          case OPENCLOSE:
+            intake.frontOpen();
             break;
         }
+        System.out.println("IntakeCmd executed.");
         break;
       case REAR:
         switch (action) {
-          case UP:
-            intake.RearUp();
-          case DOWN:
+          case UPDOWN:
             intake.RearDown();
-          case OPEN:
-            intake.RearOpen();
-          case CLOSE:
-            intake.enableCompressor();
             break;
-          case RUN:
-            intake.RearRun();
-          case STOP:
-            intake.RearStop();
-          default:
-            System.out.println("IntakeCmd action failed: executing");
+          case OPENCLOSE:
+            intake.RearOpen();
             break;
         }
+        System.out.println("IntakeCmd executed.");
         break;
       default:
+        System.out.println("IntakeCmd failed.");
         break;
     }
   }
@@ -120,35 +68,28 @@ public class IntakeCmd extends CommandBase {
     switch (side) {
       case FRONT:
         switch (action) {
-          case UP:
-          case DOWN:
-          case OPEN:
-          case CLOSE:
+          case UPDOWN:
+            intake.frontUp();
             break;
-          case RUN:
-          case STOP:
-            intake.frontStop();
-          default:
-            System.out.println("IntakeCmd action failed: end");
+          case OPENCLOSE:
+            intake.frontClose();
             break;
         }
+        System.out.println("IntakeCmd executed.");
         break;
       case REAR:
         switch (action) {
-          case UP:
-          case DOWN:
-          case OPEN:
-          case CLOSE:
+          case UPDOWN:
+            intake.RearUp();
             break;
-          case RUN:
-          case STOP:
-            intake.RearStop();
-          default:
-            System.out.println("IntakeCmd action failed: end");
+          case OPENCLOSE:
+            intake.RearClose();
             break;
         }
+        System.out.println("IntakeCmd executed.");
         break;
       default:
+        System.out.println("IntakeCmd failed.");
         break;
     }
   }

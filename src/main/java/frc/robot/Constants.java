@@ -15,7 +15,6 @@ import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
  */
 public final class Constants {
     public static final class DriveConstants {
-
         // Motors
         public static final int motorFrontLeft = 4;
         public static final int motorFrontRight = 1;
@@ -33,10 +32,9 @@ public final class Constants {
         // distancePerPulse = gearRatio * wheelPerimeter / EncoderCPR
 
         // Trajectory Constraints
-        public static final int ksVolts = 0;
-        public static final int kvVoltSecondsPerMeter = 0;
-        public static final int kaVoltSecondsSquaredPerMeter = 0;
-        public static final int kPDriveVel = 0;
+        public static final double ksVolts = 2.4;
+        public static final double kvVoltSecondsPerMeter = 7.2;
+        public static final double kaVoltSecondsSquaredPerMeter = 0;
 
         // Chassis Related
         public static final double kTrackWidthmeters = 0.595;
@@ -53,22 +51,12 @@ public final class Constants {
     
     public final class AutoConstants {
         // Feed forward shit
-        public static final int kRamseteB = 0;
-        public static final int kRamseteZeta = 0;
-        public static final int kMaxSpeedMetersPerSecond = 0;
-        public static final int kMaxAccelerationMetersPerSecondSquared = 0;
-    }
+        public static final double kMaxSpeedMetersPerSecond = 2.5;
+        public static final double kMaxAccelerationMetersPerSecondSquared = 3;
 
-    public final class IntakeFrontConstants {
-        public static final int motorLeft = 0;
-        public static final int motorRight = 0;
-        public static final int wheelSpeedVolt = 0;
-    }
-
-    public final class IntakeRearConstants {
-        public static final int motorLeft = 0;
-        public static final int motorRight = 0;
-        public static final int wheelSpeedVolt = 0;
+        // Positions
+        public static final double kPos1X = 1.86;
+        public static final double kPos1Y = 5.01;
     }
 
     public final class PneumaticsConstants {

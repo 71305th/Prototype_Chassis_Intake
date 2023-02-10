@@ -70,14 +70,10 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Drive
-    // m_drive.setDefaultCommand(new RunCommand(() -> {
-    //   m_drive.arcadeDrive(
-    //     -driverJoystick.getRawAxis(OIConstants.leftStick_Y), driverJoystick.getRawAxis(OIConstants.rightStick_X));}
-    //   , m_drive));
-
     m_drive.setDefaultCommand(new RunCommand(() -> {
       m_drive.arcadeDrive(
-        -driverJoystick.getRawAxis(OIConstants.leftStick_Y) * 0.7, -driverJoystick.getRawAxis(OIConstants.rightStick_Y) * 0.7 );
+        -driverJoystick.getRawAxis(OIConstants.leftStick_Y) * 0.7, 
+        driverJoystick.getRawAxis(OIConstants.rightStick_X) * 0.7 );
     }, m_drive));
 
     // Configure the button bindings
@@ -95,10 +91,8 @@ public class RobotContainer {
   private void configureButtonBindings() {
     new JoystickButton(driverJoystick, OIConstants.Btn_A)
       .onTrue(m_setPoint);
-
-    new JoystickButton(driverJoystick, OIConstants.Btn_B)
-      .onTrue( new RunCommand( () -> { m_drive.resetEncoders();}, m_drive));
       
+
     // new JoystickButton(driverJoystick, OIConstants.Btn_RB).toggleOnTrue(m_intakeFrontDownRun)
     //   .onFalse(m_intakeFrontStopUp);
     // new JoystickButton(driverJoystick, OIConstants.Btn_LB).toggleOnTrue(m_intakeRearDownRun)
@@ -107,6 +101,9 @@ public class RobotContainer {
     //   .onFalse(m_intakeFrontClose);
     // new JoystickButton(driverJoystick, OIConstants.trigger_L).toggleOnTrue(m_intakeRearOpen)
     //   .onFalse(m_intakeRearClose);
+  }
+
+  private void onFalse(RunCommand runCommand) {
   }
 
   /**

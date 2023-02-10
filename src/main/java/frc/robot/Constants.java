@@ -45,7 +45,7 @@ public final class Constants {
 
     public final class PIDConstants {
         // Charge Station
-        public static final double kP_Lock = 0.6;
+        public static final double kP_Lock = 1.0;
         public static final double kI_Lock = 0.05;
         public static final double kD_Lock = 0.000;
         public static final double iLimit_Lock = 0.36;
@@ -82,6 +82,8 @@ public final class Constants {
 
     public final class OIConstants {
         // Logitech F310 (X Input Mode)
+        public static final int driverJoystick = 0;
+        public static final int operatorJoystick = 1;
         public static final int leftStick_X = 0;
         public static final int leftStick_Y = 1;
         public static final int rightStick_X = 4;

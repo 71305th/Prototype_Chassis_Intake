@@ -1,5 +1,9 @@
 # Prototype_Chassis
 
+# v1.1 Details
+
+Commiter : **Moyu**
+
 # v1.0 LockPID Code Finish & Some Code Optimization
 
 Commiter : **Moyu**

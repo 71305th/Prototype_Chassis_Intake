@@ -104,10 +104,14 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void arcadeDrive(double speed, double rotation) {
-    m_drive.arcadeDrive( -speed * 0.7, rotation*0.85);
+    if( speed > 0.75 ) speed = 0.75;
+    if( rotation > 0.85 ) rotation = 0.7;
+    m_drive.arcadeDrive( -speed, rotation );
   }
 
   public void tankDrive(double left, double right) {
+    if( left > 0.75 ) left = 0.75;
+    if( right > 0.85 ) right = 0.7;
     m_drive.tankDrive( -left * 0.7, -right * 0.7);
   }
 

@@ -26,6 +26,7 @@ public class LockPID extends CommandBase {
 
   private boolean isEnd = false;
   private double lasttime = 0;
+  private Joystick driverJoystick = new Joystick(OIConstants.driverJoystick);
 
   /**
    * Creates a new ExampleCommand.
@@ -41,6 +42,7 @@ public class LockPID extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    drive.resetEncoders();
     drive.setMotor2zero();
     isEnd = false;
     // lockPIDLeft.setTolerance(0, 0);
@@ -51,8 +53,8 @@ public class LockPID extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // if ( Math.abs(driverJoystick.getRawAxis(OIConstants.leftStick_Y)) > 0.1 ) stop();
-    // if ( Math.abs(driverJoystick.getRawAxis(OIConstants.rightStick_X)) > 0.1 ) stop();
+    if ( Math.abs(driverJoystick.getRawAxis(OIConstants.leftStick_Y)) > 0.1 ) stop();
+    if ( Math.abs(driverJoystick.getRawAxis(OIConstants.rightStick_X)) > 0.1 ) stop();
 
     System.out.println("Enter");
 
